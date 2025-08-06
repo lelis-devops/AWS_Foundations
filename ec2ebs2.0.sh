@@ -1,41 +1,40 @@
 #!/bin/bash
-
+STANCE_TYPE="t3.micro"
+AVAILABITY_ZONE="sa-east=1"
 create_EC2 () {
 
 AMI="ami-020cba7c55df1f615"
-
-STANCE_TYPE="t3.micro"
 
 Firewall="launch-wizard-1"
  
 KEY_NAME="girl"
 
-
 Volumesize=8
 
 INSTANCE_ID=$(aws ec2 run-instances \ 
 
---image-id "$AMI" \
---instance-type "$STANCE_TYPE" \ 
+--image-id ""$AMI"" \
+--availabity_zone "$AVAILABITY_ZONE"
+--instance-ids "$STANCE_TYPE" \ 
 --key-name "$KEY_NAME" \
 --security-groups "$Firewall" \
---block-device-mappings "{"DeviceName":"/dev/sdf","Ebs"\":{\"Volumesize\":$Volumesize}}]"
-
+--block-device-mappings "{"DeviceName":"/dev/sdf","Ebs"\":{\"Volumeid\":$Volumeid}}]"
+aws ec2 wait ec2-in-use --ec2-ids "$AMI"
 }
 
-attach_EBS () {
+create_EBS () {
 
-volumesize_ID="vol-0b49603bd18e9a354"
-
-
+SIZE=8
+IOPS=3000
 Attached="/dev/sdf"
-
-aws ec2 attach-volume \
-
- --volume-id "$volumesize_ID" \
+VOLUME_TYPE="io1"
+Volumesize=$(aws ec2 create-volume \
+--size_gb="$SIZE_GB"
+--availabity_zone "$AVAILABITY_ZONE"
+ --iops "$IOPS" \
  --instance-id "$INSTANCE_ID" \
  --device "$Attached"
- aws ec2 wait volume-in-use --volume-ids "$volumesize_ID"
+ aws ec2 wait volume-in-use --volume-ids "$volume_ID"
  sleep 10
 
 }
