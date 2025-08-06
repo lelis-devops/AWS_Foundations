@@ -18,8 +18,8 @@ INSTANCE_ID=$(aws ec2 run-instances \
 --image-id "$AMI" \
 --instance-type "$STANCE_TYPE" \ 
 --key-name "$KEY_NAME" \
---security-groups" $Firewall" \
---block-device-mappings "{"DeviceName":"/dev/sda1","Ebs"\":{\"Volumesize\":$Volumesize}}]"
+--security-groups "$Firewall" \
+--block-device-mappings "{"DeviceName":"/dev/sdf","Ebs"\":{\"Volumesize\":$Volumesize}}]"
 
 }
 
@@ -28,27 +28,26 @@ attach_EBS () {
 volumesize_ID="vol-0b49603bd18e9a354"
 
 
-Attached="/dev/sda1"
+Attached="/dev/sdf"
 
-aws ec2 run-attach-volume \
+aws ec2 attach-volume \
 
- --volume-id "$VOLUME_ID" \
+ --volume-id "$volumesize_ID" \
  --instance-id "$INSTANCE_ID" \
  --device "$Attached"
-
+ aws ec2 wait volume-in-use --volume-ids "$VOLUME_ID"
 
 }
 
 
 mount_ebs () {
-DEVICE_NAME="/dev/sda1"
+DEVICE_NAME="/dev/sdf"
 MOUNT_POINT="/mnt/ebs"
 sudo mkfs -t ext4 $DEVICE_NAME
 sudo mkdir -p $MOUNT_POINT
 sudo mount $DEVICE_NAME $MOUNT_POINT
 
-
-echo "UUID=$UUID $MOUNT_POINT ext4 defaults,nofail 0 2" | sudo tee -a /etc/fstab
+echo " $DEVICE_NAME $MOUNT_POINT ext4 defaults,nofail 0 2" | sudo tee -a /etc/fstab
 }
 
 create_EC2
