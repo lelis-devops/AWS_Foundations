@@ -47,8 +47,8 @@ sudo mkfs -t ext4 $DEVICE_NAME
 sudo mkdir -p $MOUNT_POINT
 sudo mount $DEVICE_NAME $MOUNT_POINT
 
-echo " $DEVICE_NAME $MOUNT_POINT ext4 defaults,nofail 0 2" | sudo tee -a /etc/fstab
 
+echo "UUID=$UUID $MOUNT_POINT ext4 defaults,nofail 0 2" | sudo tee -a /etc/fstab
 }
 
 create_EC2
