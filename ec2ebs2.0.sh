@@ -16,10 +16,10 @@ Volumesize=8
 INSTANCE_ID=$(aws ec2 run-instances \ 
 
 --image-id "$AMI" \
---instance-type" $STANCE_TYPE" \ 
+--instance-type "$STANCE_TYPE" \ 
 --key-name "$KEY_NAME" \
---security-group" $Firewall" \
---block-device-mappings "{"DeviceName":"/dev/sda1","Ebs"\":{\"Volumesize\":$VOLUMEsize}}]"
+--security-groups" $Firewall" \
+--block-device-mappings "{"DeviceName":"/dev/sda1","Ebs"\":{\"Volumesize\":$Volumesize}}]"
 
 }
 
@@ -27,11 +27,9 @@ attach_EBS () {
 
 volumesize_ID="vol-0b49603bd18e9a354"
 
-Submitted-Resources="i-0426bf9ecbed68a59"
 
 Attached="/dev/sda1"
 
-Snapshot_ID="0bc1d350c2ac74766"
 aws ec2 run-attach-volume \
 
  --volume-id "$VOLUME_ID" \
@@ -45,7 +43,7 @@ aws ec2 run-attach-volume \
 mount_ebs () {
 DEVICE_NAME="/dev/sda1"
 MOUNT_POINT="/mnt/ebs"
-sudo mkfs -t $DEVICE_NAME
+sudo mkfs -t ext4 $DEVICE_NAME
 sudo mkdir -p $MOUNT_POINT
 sudo mount $DEVICE_NAME $MOUNT_POINT
 
