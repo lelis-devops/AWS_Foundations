@@ -51,5 +51,5 @@ echo " $DEVICE_NAME $MOUNT_POINT ext4 defaults,nofail 0 2" | sudo tee -a /etc/fs
 }
 
 create_EC2
-attach_EBS
+create_EBS
 mount_ebs
