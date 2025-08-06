@@ -35,7 +35,8 @@ aws ec2 attach-volume \
  --volume-id "$volumesize_ID" \
  --instance-id "$INSTANCE_ID" \
  --device "$Attached"
- aws ec2 wait volume-in-use --volume-ids "$VOLUME_ID"
+ aws ec2 wait volume-in-use --volume-ids "$volumesize_ID"
+ sleep 10
 
 }
 
