@@ -9,7 +9,7 @@ Firewall="launch-wizard-1"
  
 KEY_NAME="girl"
 
-Volumesize=8
+Volumesize=20
 
 INSTANCE_ID=$(aws ec2 run-instances \
 --image-id "$AMI" \
