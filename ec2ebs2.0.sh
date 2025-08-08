@@ -54,6 +54,8 @@ sudo mkdir -p $MOUNT_POINT
 sudo mount $DEVICE_NAME $MOUNT_POINT
 
 echo "$DEVICE_NAME $MOUNT_POINT ext4 defaults,nofail 0 2" | sudo tee -a /etc/fstab
+sudo yum update -y
+
 }
 
 create_EC2
