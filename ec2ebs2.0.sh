@@ -37,7 +37,7 @@ create_EBS() {
         --output text)
     aws ec2 wait volume-available --volume-ids "$VOLUME_ID"
     aws ec2 attach-volume \
-        --volume-id "$VOLUME_ID" \
+        --volume-id "$ VOLUME_ID" \
         --instance-id "$INSTANCE_ID" \
         --device "$ATTACHED"
     aws ec2 wait volume-in-use --volume-ids "$VOLUME_ID"
