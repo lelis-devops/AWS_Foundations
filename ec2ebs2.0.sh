@@ -5,7 +5,7 @@ AVAILABILITY_ZONE="sa-east-1a"
 AMI="ami-020cba7c55df1f615"
 FIREWALL="launch-wizard-1"
 KEY_NAME="girl"
-VOLUME_SIZE=20
+VOLUME_SIZE=8
 
 export INSTANCE_ID=""
 
@@ -24,7 +24,7 @@ create_EC2() {
 }
 
 create_EBS() {
-    SIZE=8
+    SIZE=20
     IOPS=3000
     ATTACHED="/dev/sdf"
     VOLUME_TYPE="io1"
