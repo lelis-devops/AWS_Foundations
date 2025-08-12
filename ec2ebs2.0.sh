@@ -3,11 +3,10 @@
 INSTANCE_TYPE="t3.micro"
 AVAILABILITY_ZONE="sa-east-1a"
 AMI="ami-020cba7c55df1f615"
-FIREWALL="launch-wizard-1"
+FIREWALL="sg-084f770ea84b13ea4"
 KEY_NAME="girl"
 VOLUME_SIZE=8
-
-export INSTANCE_ID=""
+SUBNET_ID="subnet-01aa6cb5fd6359d72"
 
 create_EC2() {
     INSTANCE_ID=$(aws ec2 run-instances \
@@ -15,7 +14,8 @@ create_EC2() {
         --instance-type "$INSTANCE_TYPE" \
         --placement AvailabilityZone="$AVAILABILITY_ZONE" \
         --key-name "$KEY_NAME" \
-        --security-groups "$FIREWALL" \
+        --security-groups-ids "$FIREWALL" \
+         --subnet-id "$SUBNET_ID" \
         --block-device-mappings "[{\"DeviceName\":\"/dev/sdf\",\"Ebs\":{\"VolumeSize\":$VOLUME_SIZE}}]" \
         --query "Instances[0].InstanceId" \
         --output text)
