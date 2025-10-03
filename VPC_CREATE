@@ -1,0 +1,60 @@
+//CREATE VPC
+
+TAG_NAME="ZENITSU"
+IPV4_CIDR="10.0.0.0/16"
+
+//CREATE SUBNETS
+
+
+SUBNET1_CIDR="10.0.1.0/24"
+SUBNET2_CIDR="10.0.2.0/24"
+REGION="sa-east-1"  // (= São Paulo
+
+# Criar a VPC
+VPC_ID=$(aws ec2 create-vpc \
+    --cidr-block $IPV4_CIDR \
+    --region $REGION \
+    --query 'Vpc.VpcId' \
+    --output text)
+
+# Nomear a VPC
+aws ec2 create-tags \
+    --resources $VPC_ID \
+    --tags Key=Name,Value=$TAG_NAME
+
+echo "VPC criada: $VPC_ID"
+
+# Criar Subnet 1
+SUBNET1_ID=$(aws ec2 create-subnet \
+    --vpc-id $VPC_ID \
+    --cidr-block $SUBNET1_CIDR \
+    --availability-zone ${REGION}a \
+    --query 'Subnet.SubnetId' \
+    --output text)
+
+aws ec2 create-tags \
+    --resources $SUBNET1_ID \
+    --tags Key=Name,Value="${TAG_NAME}-subnet1"
+
+echo " Subnet 1 criada: $SUBNET1_ID"
+
+# Criar Subnet 2
+SUBNET2_ID=$(aws ec2 create-subnet \
+    --vpc-id $VPC_ID \
+    --cidr-block $SUBNET2_CIDR \
+    --availability-zone ${REGION}b \
+    --query 'Subnet.SubnetId' \
+    --output text)
+
+aws ec2 create-tags \
+    --resources $SUBNET2_ID \
+    --tags Key=Name,Value="${TAG_NAME}-subnet2"
+
+echo " Subnet 2 criada: $SUBNET2_ID"
+
+
+
+
+
+
+
