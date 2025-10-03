@@ -14,13 +14,20 @@ create_EC2() {
         --instance-type "$INSTANCE_TYPE" \
         --placement AvailabilityZone="$AVAILABILITY_ZONE" \
         --key-name "$KEY_NAME" \
-        --security-groups-ids "$FIREWALL" \
-         --subnet-id "$SUBNET_ID" \
+        --security-group-ids "$FIREWALL" \
+        --subnet-id "$SUBNET_ID" \
         --block-device-mappings "[{\"DeviceName\":\"/dev/sdf\",\"Ebs\":{\"VolumeSize\":$VOLUME_SIZE}}]" \
+        --user-data '#!/bin/bash
+yum update -y
+yum install httpd -y
+systemctl start httpd
+systemctl enable httpd' \
         --query "Instances[0].InstanceId" \
         --output text)
+
     export INSTANCE_ID
     aws ec2 wait instance-running --instance-ids "$INSTANCE_ID"
+    echo " EC2 criada: $INSTANCE_ID com Apache"
 }
 
 create_EBS() {
